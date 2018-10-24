@@ -13,7 +13,7 @@ import java.util.List;
 
 public class DBManager extends SQLiteOpenHelper {
 
-    private static final int dbVersion = 1;
+    private static final int dbVersion = 2;
     private static final String dbName = "stateQuestions.db";
     private static final String tableName = "statesTable";
     private static final String scoresTableName = "scoresTable";
@@ -56,6 +56,14 @@ public class DBManager extends SQLiteOpenHelper {
         values.put(colFour, cityThree);
         values.put(colFive, answer);
         db.insert(tableName, null, values);
+    }
+
+    public void insertScoresAndDates(String score, String date){
+        db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(scoresCol, score);
+        values.put(dateCol, date);
+        db.insert(scoresTableName, null, values);
     }
 
     public void deleteFromDB(){

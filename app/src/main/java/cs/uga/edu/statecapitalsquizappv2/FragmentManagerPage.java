@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,18 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class FragmentManagerPage extends Fragment {
 
     public stateQuestionBank myStateQuestionLibrary = new stateQuestionBank();
 
     public TextView questionNumberTV;
     public TextView stateQuestion;
+    public TextView scoreText;
     public RadioGroup radioGroup;
     public RadioButton choiceOne;
     public RadioButton choiceTwo;
@@ -26,7 +33,7 @@ public class FragmentManagerPage extends Fragment {
     public Button submit;
     public int myQuestionNumber = 0;
     public String myAnswer;
-    public int score = 0;
+    public static int score = 0;
 
     @Nullable
     @Override
@@ -48,18 +55,6 @@ public class FragmentManagerPage extends Fragment {
         questionNumberTV.setText("Question " + Integer.toString(questionNumber));
         updateStateQuestion();
 
-        if(questionNumber == 7){
-            view = inflater.inflate(R.layout.finished, container, false);
-        }
-
-        /*view.setOnTouchListener(new SwipeListener(getActivity().getApplicationContext()){
-            @Override
-            public void onSwipeLeft(){
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "SWIPE LEFT", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });*/
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -69,9 +64,16 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
-                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct", Toast.LENGTH_SHORT);
-                                toast.show();
                                 score++;
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
+                    }else {
+                        submit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                submit.setEnabled(false);
                             }
                         });
                     }
@@ -81,9 +83,16 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
-                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct", Toast.LENGTH_SHORT);
-                                toast.show();
                                 score++;
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
+                    }else {
+                        submit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                submit.setEnabled(false);
                             }
                         });
                     }
@@ -93,15 +102,34 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
-                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct", Toast.LENGTH_SHORT);
-                                toast.show();
                                 score++;
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        });
+                    }else {
+                        submit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                submit.setEnabled(false);
                             }
                         });
                     }
                 }
             }
         });
+
+        Log.d("Score", String.valueOf(score));
+        if(questionNumber == 7){
+            view = inflater.inflate(R.layout.finished, container, false);
+            scoreText = (TextView) view.findViewById(R.id.score);
+            scoreText.setText("Score: " + score + "/6");
+            DBManager dbManager = new DBManager(getActivity().getApplicationContext());
+            Date date = Calendar.getInstance().getTime();
+            DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
+            String dateStr = dateFormat.format(date);
+            dbManager.insertScoresAndDates(String.valueOf(score), dateStr);
+        }
 
         return view;
     }
