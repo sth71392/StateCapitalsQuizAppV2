@@ -30,7 +30,6 @@ public class FragmentManagerPage extends Fragment {
     public int myQuestionNumber = 0;
     public String myAnswer;
     public static int score = 0;
-    public static int counter = 1;
 
     @Nullable
     @Override
@@ -63,7 +62,6 @@ public class FragmentManagerPage extends Fragment {
                             public void onClick(View v) {
                                 submit.setEnabled(false);
                                 score++;
-                                counter++;
                                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -73,7 +71,6 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
-                                counter++;
                             }
                         });
                     }
@@ -84,7 +81,6 @@ public class FragmentManagerPage extends Fragment {
                             public void onClick(View v) {
                                 submit.setEnabled(false);
                                 score++;
-                                counter++;
                                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -94,7 +90,6 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
-                                counter++;
                             }
                         });
                     }
@@ -105,7 +100,6 @@ public class FragmentManagerPage extends Fragment {
                             public void onClick(View v) {
                                 submit.setEnabled(false);
                                 score++;
-                                counter++;
                                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -115,7 +109,6 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
-                                counter++;
                             }
                         });
                     }
