@@ -8,15 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class FragmentManagerPage extends Fragment {
 
+    public stateQuestionBank myStateQuestionLibrary = new stateQuestionBank();
+
     public TextView questionNumberTV;
     public TextView stateQuestion;
-    public Button choiceOne;
-    public Button choiceTwo;
-    public Button choiceThree;
+    public RadioGroup radioGroup;
+    public RadioButton choiceOne;
+    public RadioButton choiceTwo;
+    public RadioButton choiceThree;
+    public Button submit;
+    public int myQuestionNumber = 0;
+    public String myAnswer;
+    public int score = 0;
 
     @Nullable
     @Override
@@ -27,15 +37,86 @@ public class FragmentManagerPage extends Fragment {
 
         questionNumberTV = (TextView) view.findViewById(R.id.questionNumber);
         stateQuestion = (TextView) view.findViewById(R.id.stateQuestion);
-        choiceOne = (Button) view.findViewById(R.id.choiceOne);
-        choiceTwo = (Button) view.findViewById(R.id.choiceTwo);
-        choiceThree = (Button) view.findViewById(R.id.choiceThree);
+        radioGroup = (RadioGroup) view.findViewById(R.id.radioGroup);
+        choiceOne = (RadioButton) view.findViewById(R.id.radioButton1);
+        choiceTwo = (RadioButton) view.findViewById(R.id.radioButton2);
+        choiceThree = (RadioButton) view.findViewById(R.id.radioButton3);
+        submit = (Button) view.findViewById(R.id.submit);
 
+        myStateQuestionLibrary.initialQuestions(getActivity().getApplicationContext());
 
+        questionNumberTV.setText("Question " + Integer.toString(questionNumber));
+        updateStateQuestion();
 
-        questionNumberTV.setText(Integer.toString(questionNumber));
+        if(questionNumber == 7){
+            view = inflater.inflate(R.layout.finished, container, false);
+        }
+
+        /*view.setOnTouchListener(new SwipeListener(getActivity().getApplicationContext()){
+            @Override
+            public void onSwipeLeft(){
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "SWIPE LEFT", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });*/
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.radioButton1){
+                    if(choiceOne.getText().equals(myAnswer)){
+                        submit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                submit.setEnabled(false);
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct", Toast.LENGTH_SHORT);
+                                toast.show();
+                                score++;
+                            }
+                        });
+                    }
+                }else if(checkedId == R.id.radioButton2){
+                    if(choiceTwo.getText().equals(myAnswer)){
+                        submit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                submit.setEnabled(false);
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct", Toast.LENGTH_SHORT);
+                                toast.show();
+                                score++;
+                            }
+                        });
+                    }
+                }else if(checkedId == R.id.radioButton3){
+                    if(choiceThree.getText().equals(myAnswer)){
+                        submit.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                submit.setEnabled(false);
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct", Toast.LENGTH_SHORT);
+                                toast.show();
+                                score++;
+                            }
+                        });
+                    }
+                }
+            }
+        });
 
         return view;
+    }
+
+    public void updateStateQuestion(){
+
+        if(myQuestionNumber < myStateQuestionLibrary.getLength()){
+            stateQuestion.setText("Capital of " + myStateQuestionLibrary.getStateQuestion(myQuestionNumber) + "?");
+            choiceOne.setText(myStateQuestionLibrary.getCapitalChoice(myQuestionNumber, 1));
+            choiceTwo.setText(myStateQuestionLibrary.getCapitalChoice(myQuestionNumber, 2));
+            choiceThree.setText(myStateQuestionLibrary.getCapitalChoice(myQuestionNumber, 3));
+            myAnswer = myStateQuestionLibrary.getRightAnswer(myQuestionNumber);
+            myQuestionNumber++;
+        }
+
     }
 
 }
