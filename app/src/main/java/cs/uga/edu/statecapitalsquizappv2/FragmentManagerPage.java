@@ -1,10 +1,10 @@
 package cs.uga.edu.statecapitalsquizappv2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +13,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 public class FragmentManagerPage extends Fragment {
 
@@ -31,9 +26,11 @@ public class FragmentManagerPage extends Fragment {
     public RadioButton choiceTwo;
     public RadioButton choiceThree;
     public Button submit;
+    public Button viewResults;
     public int myQuestionNumber = 0;
     public String myAnswer;
     public static int score = 0;
+    public static int counter = 1;
 
     @Nullable
     @Override
@@ -53,6 +50,7 @@ public class FragmentManagerPage extends Fragment {
         myStateQuestionLibrary.initialQuestions(getActivity().getApplicationContext());
 
         questionNumberTV.setText("Question " + Integer.toString(questionNumber));
+
         updateStateQuestion();
 
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -65,6 +63,7 @@ public class FragmentManagerPage extends Fragment {
                             public void onClick(View v) {
                                 submit.setEnabled(false);
                                 score++;
+                                counter++;
                                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -74,6 +73,7 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
+                                counter++;
                             }
                         });
                     }
@@ -84,6 +84,7 @@ public class FragmentManagerPage extends Fragment {
                             public void onClick(View v) {
                                 submit.setEnabled(false);
                                 score++;
+                                counter++;
                                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -93,6 +94,7 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
+                                counter++;
                             }
                         });
                     }
@@ -103,6 +105,7 @@ public class FragmentManagerPage extends Fragment {
                             public void onClick(View v) {
                                 submit.setEnabled(false);
                                 score++;
+                                counter++;
                                 Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Correct " + score, Toast.LENGTH_SHORT);
                                 toast.show();
                             }
@@ -112,6 +115,7 @@ public class FragmentManagerPage extends Fragment {
                             @Override
                             public void onClick(View v) {
                                 submit.setEnabled(false);
+                                counter++;
                             }
                         });
                     }
@@ -119,23 +123,21 @@ public class FragmentManagerPage extends Fragment {
             }
         });
 
-        Log.d("Score", String.valueOf(score));
         if(questionNumber == 7){
             view = inflater.inflate(R.layout.finished, container, false);
-            scoreText = (TextView) view.findViewById(R.id.score);
-            scoreText.setText("Score: " + score + "/6");
-            DBManager dbManager = new DBManager(getActivity().getApplicationContext());
-            Date date = Calendar.getInstance().getTime();
-            DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
-            String dateStr = dateFormat.format(date);
-            dbManager.insertScoresAndDates(String.valueOf(score), dateStr);
+            viewResults = (Button) view.findViewById(R.id.viewResults);
+            viewResults.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    viewResultsActivity();
+                }
+            });
         }
 
         return view;
     }
 
     public void updateStateQuestion(){
-
         if(myQuestionNumber < myStateQuestionLibrary.getLength()){
             stateQuestion.setText("Capital of " + myStateQuestionLibrary.getStateQuestion(myQuestionNumber) + "?");
             choiceOne.setText(myStateQuestionLibrary.getCapitalChoice(myQuestionNumber, 1));
@@ -144,7 +146,11 @@ public class FragmentManagerPage extends Fragment {
             myAnswer = myStateQuestionLibrary.getRightAnswer(myQuestionNumber);
             myQuestionNumber++;
         }
-
     }
 
+    public void viewResultsActivity(){
+        Intent intent = new Intent(getActivity(), ResultsActivity.class);
+        intent.putExtra("results", String.valueOf(score));
+        startActivity(intent);
+    }
 }

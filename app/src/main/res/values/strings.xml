@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">State Capitals Quiz App V2</string>
-    <string name ="info">Welcome to the State Capital Quiz App! Here you can start a quiz or view your past results. The app plays by giving you a State and 3 cities to choose a capital from. Hit enter to submit your answer, and swipe left to advance to the next question.</string>
+    <string name="info">Welcome to the State Capital Quiz App! Here you can start a quiz or view your past results. The app plays by giving you a State and 3 cities to choose a capital from. Hit enter to submit your answer, and swipe left to advance to the next question.</string>
 </resources>
