@@ -15,6 +15,7 @@ import java.nio.charset.Charset;
 public class SplashActivity extends AppCompatActivity {
 
     public Button enterButton;
+    public Button viewResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +31,23 @@ public class SplashActivity extends AppCompatActivity {
                 startMainActivity();
             }
         });
+
+        viewResults = (Button) findViewById(R.id.quizResults);
+        viewResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAllQuizResultsActivity();
+            }
+        });
     }
 
     public void startMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    public void openAllQuizResultsActivity(){
+        Intent intent = new Intent(this, AllQuizResultsActivity.class);
         startActivity(intent);
     }
 

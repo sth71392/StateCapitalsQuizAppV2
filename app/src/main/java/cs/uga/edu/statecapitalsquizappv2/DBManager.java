@@ -102,6 +102,21 @@ public class DBManager extends SQLiteOpenHelper {
         return stateArrayList;
     }
 
+    public String getScoresAndDates(){
+        String selectQuery = "SELECT * FROM " + scoresTableName;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        String scoresAndDates = "";
+        int count = 0;
+        if(cursor.moveToLast()){
+            do {
+                scoresAndDates = scoresAndDates + "Score: " + cursor.getString(cursor.getColumnIndex(scoresCol)) + "; " + "Date: " + cursor.getString(cursor.getColumnIndex(dateCol)) + "\n\n";
+                count++;
+            }while(cursor.moveToPrevious() && count < 5);
+        }
+        return scoresAndDates;
+    }
+
 
 
 }
